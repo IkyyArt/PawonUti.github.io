@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pawon Uti - Makanan Tradisional Nusantara</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Animate CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #d35400;
+        --secondary-color: #e67e22;
+        --accent-color: #f39c12;
+        --light-color: #fef9e7;
+        --dark-color: #2c3e50;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-color);
+        color: var(--dark-color);
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.8rem;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-color) !important;
+        transform: translateY(-2px);
+      }
+
+      .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0;
+        text-align: center;
+      }
+
+      .section-title {
+        position: relative;
+        margin-bottom: 2rem;
+        padding-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: var(--primary-color);
+      }
+
+      .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .food-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .food-img {
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .food-card:hover .food-img {
+        transform: scale(1.1);
+      }
+
+      .price-tag {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .order-btn {
+        background-color: var(--accent-color);
+        border: none;
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .order-btn:hover {
+        background-color: var(--primary-color);
+        transform: scale(1.05);
+      }
+
+      .quantity-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+      }
+
+      .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .quantity-btn:hover {
+        background-color: #f5f5f5;
+      }
+
+      .quantity-input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 0 10px;
+        padding: 5px;
+      }
+
+      .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        width: 400px;
+        height: 100vh;
+        background-color: white;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.4s ease;
+        z-index: 1050;
+        overflow-y: auto;
+      }
+
+      .cart-sidebar.open {
+        right: 0;
+      }
+
+      .cart-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        display: none;
+      }
+
+      .cart-overlay.show {
+        display: block;
+      }
+
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .cart-item-details {
+        flex-grow: 1;
+      }
+
+      .cart-item-controls {
+        display: flex;
+        align-items: center;
+      }
+
+      footer {
+        background-color: var(--dark-color);
+        color: white;
+        padding: 40px 0 20px;
+      }
+
+      .social-icons a {
+        color: white;
+        font-size: 1.5rem;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        color: var(--accent-color);
+        transform: translateY(-3px);
+      }
+
+      .whatsapp-btn {
+        background-color: #25d366;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .whatsapp-btn:hover {
+        background-color: #128c7e;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        color: white;
+      }
+
+      /* Animasi khusus */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in-up {
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      .delay-1 {
+        animation-delay: 0.2s;
+      }
+
+      .delay-2 {
+        animation-delay: 0.4s;
+      }
+
+      .delay-3 {
+        animation-delay: 0.6s;
+      }
+
+      /* Responsif */
+      @media (max-width: 768px) {
+        .cart-sidebar {
+          width: 100%;
+          right: -100%;
+        }
+
+        .hero-section {
+          padding: 100px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i
+            class="fas fa-utensils me-2"
+            style="color: var(--primary-color)"
+          ></i>
+          Pawon Uti
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#home">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#menu">Menu</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Tentang Kami</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Kontak</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link position-relative" href="#" id="cart-toggle">
+                <i class="fas fa-shopping-cart"></i>
+                <span
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  id="cart-count"
+                  >0</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h1
+              class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown"
+            >
+              Pawon Uti
+            </h1>
+            <p class="lead mb-5 animate__animated animate__fadeInUp">
+              Rasa Autentik Nusantara dalam Setiap Suapan
+            </p>
+            <a
+              href="#menu"
+              class="btn btn-primary btn-lg animate__animated animate__pulse animate__infinite"
+              >Lihat Menu</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="section-title fw-bold">Menu Andalan</h2>
+        <p class="text-center mb-5">Pilihan terbaik dari dapur Pawon Uti</p>
+
+        <div class="row g-4">
+          <!-- Menu Item 1 -->
+          <div class="col-md-6 col-lg-4 fade-in-up">
+            <div class="card food-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1552611052-33e04de081de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top food-img"
+                alt="Nasi Goreng Spesial"
+              />
+              <span class="price-tag">Rp 25.000</span>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Nasi Goreng Spesial</h5>
+                <p class="card-text flex-grow-1">
+                  Nasi goreng dengan bumbu rahasia, dilengkapi ayam suwir,
+                  telur, dan kerupuk.
+                </p>
+                <div class="quantity-control">
+                  <button class="quantity-btn minus" data-id="1">-</button>
+                  <input
+                    type="number"
+                    class="quantity-input"
+                    id="quantity-1"
+                    value="1"
+                    min="1"
+                  />
+                  <button class="quantity-btn plus" data-id="1">+</button>
+                </div>
+                <button
+                  class="btn order-btn add-to-cart"
+                  data-id="1"
+                  data-name="Nasi Goreng Spesial"
+                  data-price="25000"
+                >
+                  <i class="fas fa-cart-plus me-2"></i>Tambahkan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item 2 -->
+          <div class="col-md-6 col-lg-4 fade-in-up delay-1">
+            <div class="card food-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top food-img"
+                alt="Soto Ayam Lamongan"
+              />
+              <span class="price-tag">Rp 30.000</span>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Soto Ayam Lamongan</h5>
+                <p class="card-text flex-grow-1">
+                  Soto ayam khas Lamongan dengan kuah kuning gurih dan koya yang
+                  khas.
+                </p>
+                <div class="quantity-control">
+                  <button class="quantity-btn minus" data-id="2">-</button>
+                  <input
+                    type="number"
+                    class="quantity-input"
+                    id="quantity-2"
+                    value="1"
+                    min="1"
+                  />
+                  <button class="quantity-btn plus" data-id="2">+</button>
+                </div>
+                <button
+                  class="btn order-btn add-to-cart"
+                  data-id="2"
+                  data-name="Soto Ayam Lamongan"
+                  data-price="30000"
+                >
+                  <i class="fas fa-cart-plus me-2"></i>Tambahkan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item 3 -->
+          <div class="col-md-6 col-lg-4 fade-in-up delay-2">
+            <div class="card food-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top food-img"
+                alt="Gado-gado"
+              />
+              <span class="price-tag">Rp 22.000</span>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Gado-gado</h5>
+                <p class="card-text flex-grow-1">
+                  Sayuran segar dengan bumbu kacang khas, dilengkapi kerupuk dan
+                  lontong.
+                </p>
+                <div class="quantity-control">
+                  <button class="quantity-btn minus" data-id="3">-</button>
+                  <input
+                    type="number"
+                    class="quantity-input"
+                    id="quantity-3"
+                    value="1"
+                    min="1"
+                  />
+                  <button class="quantity-btn plus" data-id="3">+</button>
+                </div>
+                <button
+                  class="btn order-btn add-to-cart"
+                  data-id="3"
+                  data-name="Gado-gado"
+                  data-price="22000"
+                >
+                  <i class="fas fa-cart-plus me-2"></i>Tambahkan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item 4 -->
+          <div class="col-md-6 col-lg-4 fade-in-up delay-3">
+            <div class="card food-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top food-img"
+                alt="Rendang Daging"
+              />
+              <span class="price-tag">Rp 45.000</span>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Rendang Daging</h5>
+                <p class="card-text flex-grow-1">
+                  Daging sapi dimasak dengan bumbu rempah khas Minang hingga
+                  empuk dan meresap.
+                </p>
+                <div class="quantity-control">
+                  <button class="quantity-btn minus" data-id="4">-</button>
+                  <input
+                    type="number"
+                    class="quantity-input"
+                    id="quantity-4"
+                    value="1"
+                    min="1"
+                  />
+                  <button class="quantity-btn plus" data-id="4">+</button>
+                </div>
+                <button
+                  class="btn order-btn add-to-cart"
+                  data-id="4"
+                  data-name="Rendang Daging"
+                  data-price="45000"
+                >
+                  <i class="fas fa-cart-plus me-2"></i>Tambahkan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item 5 -->
+          <div class="col-md-6 col-lg-4 fade-in-up">
+            <div class="card food-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1591814460904-2dab0e3f3d9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top food-img"
+                alt="Sate Ayam"
+              />
+              <span class="price-tag">Rp 35.000</span>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Sate Ayam</h5>
+                <p class="card-text flex-grow-1">
+                  Sate ayam dengan bumbu kacang yang khas, disajikan dengan
+                  lontong dan bawang goreng.
+                </p>
+                <div class="quantity-control">
+                  <button class="quantity-btn minus" data-id="5">-</button>
+                  <input
+                    type="number"
+                    class="quantity-input"
+                    id="quantity-5"
+                    value="1"
+                    min="1"
+                  />
+                  <button class="quantity-btn plus" data-id="5">+</button>
+                </div>
+                <button
+                  class="btn order-btn add-to-cart"
+                  data-id="5"
+                  data-name="Sate Ayam"
+                  data-price="35000"
+                >
+                  <i class="fas fa-cart-plus me-2"></i>Tambahkan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menu Item 6 -->
+          <div class="col-md-6 col-lg-4 fade-in-up delay-1">
+            <div class="card food-card h-100">
+              <img
+                src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="card-img-top food-img"
+                alt="Bakso Malang"
+              />
+              <span class="price-tag">Rp 28.000</span>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Bakso Malang</h5>
+                <p class="card-text flex-grow-1">
+                  Bakso urat, pangsit, dan tahu goreng dalam kuah kaldu sapi
+                  yang gurih.
+                </p>
+                <div class="quantity-control">
+                  <button class="quantity-btn minus" data-id="6">-</button>
+                  <input
+                    type="number"
+                    class="quantity-input"
+                    id="quantity-6"
+                    value="1"
+                    min="1"
+                  />
+                  <button class="quantity-btn plus" data-id="6">+</button>
+                </div>
+                <button
+                  class="btn order-btn add-to-cart"
+                  data-id="6"
+                  data-name="Bakso Malang"
+                  data-price="28000"
+                >
+                  <i class="fas fa-cart-plus me-2"></i>Tambahkan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="section-title fw-bold text-start">Tentang Pawon Uti</h2>
+            <p class="lead">
+              Sejak 1985, Pawon Uti telah menghadirkan cita rasa autentik
+              masakan Nusantara dengan resep turun-temurun.
+            </p>
+            <p>
+              Kami berkomitmen untuk menggunakan bahan-bahan terbaik dan segar
+              dalam setiap hidangan. Dengan pengalaman lebih dari 35 tahun,
+              Pawon Uti telah menjadi pilihan keluarga Indonesia untuk menikmati
+              makanan tradisional yang lezat dan berkualitas.
+            </p>
+            <p>
+              Setiap hidangan di Pawon Uti dibuat dengan penuh cinta dan
+              perhatian terhadap detail, menjaga keaslian rasa yang telah
+              menjadi ciri khas kami selama puluhan tahun.
+            </p>
+          </div>
+          <div class="col-lg-6">
+            <img
+              src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              class="img-fluid rounded shadow"
+              alt="Interior Pawon Uti"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="section-title fw-bold">Hubungi Kami</h2>
+        <p class="text-center mb-5">
+          Kami siap melayani pesanan dan pertanyaan Anda
+        </p>
+
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <i
+                  class="fas fa-map-marker-alt fa-2x mb-3"
+                  style="color: var(--primary-color)"
+                ></i>
+                <h5 class="card-title">Alamat</h5>
+                <p class="card-text">
+                  Jl. Nusantara No. 123<br />Jakarta Pusat, 10110
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <i
+                  class="fas fa-phone fa-2x mb-3"
+                  style="color: var(--primary-color)"
+                ></i>
+                <h5 class="card-title">Telepon</h5>
+                <p class="card-text">(021) 1234-5678<br />0812-3456-7890</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+              <div class="card-body">
+                <i
+                  class="fas fa-clock fa-2x mb-3"
+                  style="color: var(--primary-color)"
+                ></i>
+                <h5 class="card-title">Jam Operasional</h5>
+                <p class="card-text">Senin - Minggu<br />09:00 - 22:00 WIB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h4 class="mb-3">Pawon Uti</h4>
+            <p>Rasa Autentik Nusantara dalam Setiap Suapan</p>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h5 class="mb-3">Link Cepat</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#home" class="text-light text-decoration-none"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a href="#menu" class="text-light text-decoration-none">Menu</a>
+              </li>
+              <li>
+                <a href="#about" class="text-light text-decoration-none"
+                  >Tentang Kami</a
+                >
+              </li>
+              <li>
+                <a href="#contact" class="text-light text-decoration-none"
+                  >Kontak</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4">
+            <h5 class="mb-3">Pesan Sekarang</h5>
+            <p>Pesan makanan favorit Anda melalui WhatsApp</p>
+            <a
+              href="https://wa.me/6281234567890?text=Halo%20Pawon%20Uti,%20saya%20ingin%20memesan%20makanan"
+              class="btn whatsapp-btn"
+              target="_blank"
+            >
+              <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
+            </a>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="text-center">
+          <p>&copy; 2023 Pawon Uti. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+      <div class="p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4>Keranjang Belanja</h4>
+          <button class="btn-close" id="close-cart"></button>
+        </div>
+
+        <div id="cart-items" class="mb-4">
+          <!-- Cart items will be added here dynamically -->
+          <p class="text-center" id="empty-cart-message">
+            Keranjang belanja Anda kosong
+          </p>
+        </div>
+
+        <div class="d-flex justify-content-between mb-3">
+          <strong>Total:</strong>
+          <strong id="cart-total">Rp 0</strong>
+        </div>
+
+        <button class="btn whatsapp-btn w-100 mb-2" id="checkout-btn">
+          <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+        </button>
+        <button class="btn btn-outline-secondary w-100" id="continue-shopping">
+          Lanjutkan Belanja
+        </button>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Cart functionality
+      let cart = [];
+
+      // DOM elements
+      const cartToggle = document.getElementById("cart-toggle");
+      const closeCart = document.getElementById("close-cart");
+      const cartOverlay = document.getElementById("cart-overlay");
+      const cartSidebar = document.getElementById("cart-sidebar");
+      const cartItems = document.getElementById("cart-items");
+      const cartCount = document.getElementById("cart-count");
+      const cartTotal = document.getElementById("cart-total");
+      const emptyCartMessage = document.getElementById("empty-cart-message");
+      const checkoutBtn = document.getElementById("checkout-btn");
+      const continueShoppingBtn = document.getElementById("continue-shopping");
+
+      // Toggle cart sidebar
+      cartToggle.addEventListener("click", function (e) {
+        e.preventDefault();
+        cartSidebar.classList.add("open");
+        cartOverlay.classList.add("show");
+      });
+
+      // Close cart sidebar
+      closeCart.addEventListener("click", function () {
+        cartSidebar.classList.remove("open");
+        cartOverlay.classList.remove("show");
+      });
+
+      cartOverlay.addEventListener("click", function () {
+        cartSidebar.classList.remove("open");
+        cartOverlay.classList.remove("show");
+      });
+
+      continueShoppingBtn.addEventListener("click", function () {
+        cartSidebar.classList.remove("open");
+        cartOverlay.classList.remove("show");
+      });
+
+      // Quantity controls
+      document.querySelectorAll(".quantity-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          const input = document.getElementById(`quantity-${id}`);
+          let value = parseInt(input.value);
+
+          if (this.classList.contains("plus")) {
+            value++;
+          } else if (this.classList.contains("minus") && value > 1) {
+            value--;
+          }
+
+          input.value = value;
+        });
+      });
+
+      // Add to cart
+      document.querySelectorAll(".add-to-cart").forEach((button) => {
+        button.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          const name = this.getAttribute("data-name");
+          const price = parseInt(this.getAttribute("data-price"));
+          const quantity = parseInt(
+            document.getElementById(`quantity-${id}`).value
+          );
+
+          // Check if item already in cart
+          const existingItemIndex = cart.findIndex((item) => item.id === id);
+
+          if (existingItemIndex !== -1) {
+            // Update quantity if item exists
+            cart[existingItemIndex].quantity += quantity;
+          } else {
+            // Add new item to cart
+            cart.push({
+              id,
+              name,
+              price,
+              quantity,
+            });
+          }
+
+          updateCart();
+
+          // Show cart sidebar
+          cartSidebar.classList.add("open");
+          cartOverlay.classList.add("show");
+
+          // Animation feedback
+          this.innerHTML = '<i class="fas fa-check me-2"></i>Ditambahkan';
+          this.classList.add("btn-success");
+          setTimeout(() => {
+            this.innerHTML = '<i class="fas fa-cart-plus me-2"></i>Tambahkan';
+            this.classList.remove("btn-success");
+          }, 1000);
+        });
+      });
+
+      // Update cart display
+      function updateCart() {
+        // Update cart count
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+
+        // Update cart items
+        if (cart.length === 0) {
+          emptyCartMessage.style.display = "block";
+          cartItems.innerHTML = "";
+        } else {
+          emptyCartMessage.style.display = "none";
+
+          let itemsHTML = "";
+          let total = 0;
+
+          cart.forEach((item) => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            itemsHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-details">
+                                <h6>${item.name}</h6>
+                                <p class="mb-0">Rp ${item.price.toLocaleString()} x ${
+              item.quantity
+            }</p>
+                            </div>
+                            <div class="cart-item-controls">
+                                <span class="me-3 fw-bold">Rp ${itemTotal.toLocaleString()}</span>
+                                <button class="btn btn-sm btn-outline-danger remove-item" data-id="${
+                                  item.id
+                                }">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          cartItems.innerHTML = itemsHTML;
+          cartTotal.textContent = `Rp ${total.toLocaleString()}`;
+
+          // Add event listeners to remove buttons
+          document.querySelectorAll(".remove-item").forEach((button) => {
+            button.addEventListener("click", function () {
+              const id = this.getAttribute("data-id");
+              removeFromCart(id);
+            });
+          });
+        }
+      }
+
+      // Remove item from cart
+      function removeFromCart(id) {
+        cart = cart.filter((item) => item.id !== id);
+        updateCart();
+      }
+
+      // Checkout via WhatsApp
+      checkoutBtn.addEventListener("click", function () {
+        if (cart.length === 0) {
+          alert("Keranjang belanja Anda kosong!");
+          return;
+        }
+
+        // Format pesan untuk WhatsApp
+        let message = "Halo Pawon Uti, saya ingin memesan:\n\n";
+
+        cart.forEach((item) => {
+          message += `- ${item.name} (${
+            item.quantity
+          } x Rp ${item.price.toLocaleString()}) = Rp ${(
+            item.price * item.quantity
+          ).toLocaleString()}\n`;
+        });
+
+        const total = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+        message += `\nTotal: Rp ${total.toLocaleString()}\n\n`;
+        message += "Terima kasih!";
+
+        // Encode message untuk URL
+        const encodedMessage = encodeURIComponent(message);
+
+        // Nomor WhatsApp Pawon Uti (ganti dengan nomor yang sesuai)
+        const phoneNumber = "6281234567890";
+
+        // Redirect ke WhatsApp
+        window.open(
+          `https://wa.me/${phoneNumber}?text=${encodedMessage}`,
+          "_blank"
+        );
+
+        // Kosongkan keranjang setelah checkout
+        cart = [];
+        updateCart();
+        cartSidebar.classList.remove("open");
+        cartOverlay.classList.remove("show");
+      });
+
+      // Scroll animations
+      function animateOnScroll() {
+        const elements = document.querySelectorAll(".fade-in-up");
+
+        elements.forEach((element) => {
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+
+          if (elementTop < window.innerHeight - elementVisible) {
+            element.classList.add("animate__animated", "animate__fadeInUp");
+          }
+        });
+      }
+
+      // Initial call to animate elements in view
+      animateOnScroll();
+
+      // Animate on scroll
+      window.addEventListener("scroll", animateOnScroll);
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          const targetId = this.getAttribute("href");
+          if (targetId === "#") return;
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 70,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
