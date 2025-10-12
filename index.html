@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>De'Ngrowot - Makanan Sehat dan Diet</title>
+    <title>De'Ngrowot - Makanan Tradisional Nusantara</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -19,7 +19,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
-    <!-- Leaflet CSS -->
+    <!-- Leaflet CSS for Maps -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -164,8 +164,8 @@
       }
 
       .quantity-btn {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         border: 1px solid #ddd;
         background-color: white;
@@ -174,16 +174,19 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.2s ease;
+        font-weight: bold;
       }
 
       .quantity-btn:hover {
         background-color: #f5f5f5;
+        border-color: var(--primary-color);
       }
 
       .quantity-btn:disabled {
         background-color: #f5f5f5;
         cursor: not-allowed;
         color: #aaa;
+        border-color: #ddd;
       }
 
       .quantity-input {
@@ -193,6 +196,7 @@
         border-radius: 5px;
         margin: 0 10px;
         padding: 5px;
+        font-weight: bold;
       }
 
       .cart-sidebar {
@@ -304,7 +308,7 @@
         color: white;
       }
 
-      /* Styling untuk form COD */
+      /* Styling untuk form */
       .form-control:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.2rem rgba(211, 84, 0, 0.25);
@@ -322,48 +326,13 @@
         margin-bottom: 15px;
       }
 
-      /* Map container */
-      #map {
-        height: 300px;
-        width: 100%;
-        border-radius: 10px;
-        margin-top: 10px;
-        z-index: 1;
-      }
-
-      .location-search {
-        position: relative;
-      }
-
-      .location-search-results {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        display: none;
-      }
-
-      .location-result {
-        padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #eee;
-      }
-
-      .location-result:hover {
-        background-color: #f5f5f5;
-      }
-
-      .distance-info {
-        background-color: #e8f5e8;
+      /* Informasi toko */
+      .store-info {
+        background-color: #f0f7ff;
         border-radius: 10px;
         padding: 15px;
-        margin-top: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid var(--primary-color);
       }
 
       /* Animasi khusus */
@@ -394,6 +363,163 @@
         animation-delay: 0.6s;
       }
 
+      /* Notifikasi jam operasional */
+      .operating-hours-notification {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+        padding: 15px;
+        text-align: center;
+        font-weight: 600;
+        animation: slideDown 0.5s ease forwards;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .operating-hours-notification.open {
+        display: block;
+      }
+
+      .operating-hours-notification.closed {
+        background-color: #ffab9a;
+        color: white;
+      }
+
+      .operating-hours-notification.open-soon {
+        background-color: #f39c12;
+        color: white;
+      }
+
+      .operating-hours-notification.open-now {
+        background-color: #2ecc71;
+        color: white;
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Overlay untuk menu saat tutup */
+      .menu-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        z-index: 10;
+      }
+
+      .menu-overlay-content {
+        text-align: center;
+        padding: 20px;
+      }
+
+      /* Shipping method styles */
+      .shipping-method {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .shipping-method:hover {
+        border-color: var(--primary-color);
+      }
+
+      .shipping-method.selected {
+        border-color: var(--primary-color);
+        background-color: #fff9f5;
+      }
+
+      .shipping-method .form-check-input {
+        margin-top: 0.3rem;
+      }
+
+      /* Map container */
+      #map-container {
+        height: 300px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        border: 2px solid #e9ecef;
+      }
+
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Delivery options */
+      .delivery-option {
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .delivery-option:hover {
+        border-color: var(--primary-color);
+      }
+
+      .delivery-option.selected {
+        border-color: var(--primary-color);
+        background-color: #fff9f5;
+      }
+
+      /* Custom marker styles */
+      .custom-marker {
+        background-color: white;
+        border: 3px solid var(--primary-color);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .marker-icon {
+        color: var(--primary-color);
+        font-size: 18px;
+      }
+
+      /* Distance info styles */
+      .distance-info {
+        background-color: #e8f5e8;
+        border-radius: 5px;
+        padding: 8px;
+        margin-top: 10px;
+        font-size: 0.8rem;
+      }
+
+      /* Info box styles */
+      .info-box {
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        font-size: 12px;
+        max-width: 200px;
+      }
+
       /* Responsif */
       @media (max-width: 768px) {
         .cart-sidebar {
@@ -405,13 +531,24 @@
           padding: 100px 0;
         }
 
-        #map {
+        .operating-hours-notification {
+          top: 70px;
+          font-size: 0.9rem;
+          padding: 10px;
+        }
+
+        #map-container {
           height: 250px;
         }
       }
     </style>
   </head>
   <body>
+    <!-- Notifikasi Jam Operasional -->
+    <div id="operating-hours-notification" class="operating-hours-notification">
+      <!-- Konten akan diisi oleh JavaScript -->
+    </div>
+
     <!-- Navbar -->
     <nav
       class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm"
@@ -488,12 +625,23 @@
     <section id="menu" class="py-5 bg-light">
       <div class="container">
         <h2 class="section-title fw-bold">Menu Andalan</h2>
-        <p class="text-center mb-5">Pilihan terbaik dari dapur De'Ngrowot</p>
+        <p class="text-center mb-5">Pilihan terbaik dari De'Ngrowot</p>
 
         <div class="row g-4">
           <!-- Menu Item 1 -->
           <div class="col-md-6 col-lg-4 fade-in-up">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-1">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="WANPAKO.png"
                 class="card-img-top food-img"
@@ -534,7 +682,18 @@
 
           <!-- Menu Item 2 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-1">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-2">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="SaladWrap.png"
                 class="card-img-top food-img"
@@ -575,9 +734,20 @@
 
           <!-- Menu Item 3 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-1">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-3">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
-                src="Salad Sayurpng.png"
+                src="SaladSayurpng.png"
                 class="card-img-top food-img"
                 alt="Salad Sayur"
               />
@@ -616,7 +786,18 @@
 
           <!-- Menu Item 4 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-2">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-4">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="PoloPendem.png"
                 class="card-img-top food-img"
@@ -657,7 +838,18 @@
 
           <!-- Menu Item 5 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-2">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-5">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="infus water coconut 250ml.jpg"
                 class="card-img-top food-img"
@@ -698,7 +890,18 @@
 
           <!-- Menu Item 6 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-2">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-6">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="INFUSWATER.jpg"
                 class="card-img-top food-img"
@@ -739,7 +942,18 @@
 
           <!-- Menu Item 7 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-3">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-7">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="INFUSWATER.jpg"
                 class="card-img-top food-img"
@@ -780,7 +994,18 @@
 
           <!-- Menu Item 8 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-3">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-8">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="teh bunga telang.jpg"
                 class="card-img-top food-img"
@@ -821,7 +1046,18 @@
 
           <!-- Menu Item 9 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-3">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-9">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img src="Jamu.png" class="card-img-top food-img" alt="Jamu" />
               <span class="price-tag">Rp 6.000</span>
               <div class="card-body d-flex flex-column">
@@ -857,7 +1093,18 @@
 
           <!-- Menu Item 10 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-3">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-10">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="RujakBuah.png"
                 class="card-img-top food-img"
@@ -898,7 +1145,18 @@
 
           <!-- Menu Item 11 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-3">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-11">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="JusBuah.png"
                 class="card-img-top food-img"
@@ -938,7 +1196,18 @@
 
           <!-- Menu Item 12 -->
           <div class="col-md-6 col-lg-4 fade-in-up delay-3">
-            <div class="card food-card h-100">
+            <div class="card food-card h-100 position-relative">
+              <!-- Overlay untuk menu saat tutup -->
+              <div class="menu-overlay" id="menu-overlay-12">
+                <div class="menu-overlay-content">
+                  <i class="fas fa-clock fa-3x mb-3 text-muted"></i>
+                  <h5 class="text-muted">Menu Belum Tersedia</h5>
+                  <p class="text-muted">
+                    Senin - Jumat Order jam 16.00 - 18.00 WIB
+                  </p>
+                </div>
+              </div>
+
               <img
                 src="BuahPotong.png"
                 class="card-img-top food-img"
@@ -1006,7 +1275,7 @@
             <img
               src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               class="img-fluid rounded shadow"
-              alt="Interior De'Ngrowot"
+              alt="Interior  De'Ngrowot"
             />
           </div>
         </div>
@@ -1046,7 +1315,7 @@
                   style="color: var(--primary-color)"
                 ></i>
                 <h5 class="card-title">Telepon</h5>
-                <p class="card-text">(024) 1234-5678<br />0812-3456-7890</p>
+                <p class="card-text">0881336549669</p>
               </div>
             </div>
           </div>
@@ -1059,7 +1328,7 @@
                   style="color: var(--primary-color)"
                 ></i>
                 <h5 class="card-title">Jam Operasional</h5>
-                <p class="card-text">Senin - Minggu<br />07:00 - 14.00 WIB</p>
+                <p class="card-text">Senin - Jumat<br />16.00 - 18:00 WIB</p>
               </div>
             </div>
           </div>
@@ -1073,7 +1342,7 @@
         <div class="row">
           <div class="col-lg-4 mb-4 mb-lg-0">
             <h4 class="mb-3">De'Ngrowot</h4>
-            <p>Makanan Sehat untuk Gaya Hidup Sehat</p>
+            <p>Rasa Autentik dalam Setiap Suapan</p>
             <div class="social-icons">
               <a href="#"><i class="fab fa-facebook"></i></a>
               <a href="#"><i class="fab fa-instagram"></i></a>
@@ -1108,7 +1377,7 @@
             <h5 class="mb-3">Pesan Sekarang</h5>
             <p>Pesan makanan favorit Anda melalui WhatsApp</p>
             <a
-              href="https://wa.me/6281234567890?text=Halo%20De'Ngrowot,%20saya%20ingin%20memesan%20makanan"
+              href="https://wa.me/6281336549669?text=Halo%20Farrel%20Tako,%20saya%20ingin%20memesan%20makanan"
               class="btn whatsapp-btn"
               target="_blank"
             >
@@ -1139,107 +1408,173 @@
           </p>
         </div>
 
-        <!-- Form untuk COD -->
-        <div id="cod-form" style="display: none">
-          <h5 class="mb-3">Informasi Pengiriman</h5>
+        <!-- Form untuk WhatsApp Order -->
+        <div id="wa-form">
+          <h5 class="mb-3">Informasi Pemesanan:</h5>
+
+          <div class="store-info">
+            <h6><i class="fas fa-store me-2"></i>Informasi Pengambilan</h6>
+            <p class="mb-1">
+              <strong>Alamat De'Ngrowot:</strong>
+            </p>
+            <p class="mb-2">
+              Jl. Kagok Dalam 2 No. 33 Rt 03 Rw 06, Semarang Jawa Tengah, 50525
+            </p>
+            <p class="mb-0">
+              <small
+                ><i class="fas fa-info-circle me-1"></i>Pesanan dapat diambil
+                langsung di toko</small
+              >
+            </p>
+          </div>
+
           <div class="mb-3">
-            <label for="customer-name" class="form-label">Nama Lengkap</label>
+            <label for="customer-name" class="form-label">Nama Lengkap *</label>
             <input
               type="text"
               class="form-control"
               id="customer-name"
+              placeholder="Masukkan nama lengkap"
               required
             />
           </div>
           <div class="mb-3">
-            <label for="customer-phone" class="form-label">Nomor Telepon</label>
+            <label for="customer-phone" class="form-label"
+              >Nomor Telepon *</label
+            >
             <input
               type="tel"
               class="form-control"
               id="customer-phone"
+              placeholder="Contoh: 081234567890"
               required
             />
           </div>
 
-          <div class="mb-3 location-search">
+          <!-- Pilihan Metode Pengiriman -->
+          <div class="mb-3">
+            <label class="form-label">Metode Pengiriman *</label>
+            <div class="shipping-method" id="pickup-method">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="shippingMethod"
+                  id="pickup"
+                  value="pickup"
+                  checked
+                />
+                <label class="form-check-label fw-bold" for="pickup">
+                  <i class="fas fa-store me-2"></i>Ambil di Tempat
+                </label>
+                <p class="mb-0 mt-1 text-muted small">
+                  Pesanan dapat diambil langsung di toko De'Ngrowot
+                </p>
+              </div>
+            </div>
+            <div class="shipping-method" id="delivery-method">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="shippingMethod"
+                  id="delivery"
+                  value="delivery"
+                />
+                <label class="form-check-label fw-bold" for="delivery">
+                  <i class="fas fa-motorcycle me-2"></i>Antar ke Alamat
+                </label>
+                <p class="mb-0 mt-1 text-muted small">
+                  Pesanan akan diantar ke alamat yang Anda tentukan
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Alamat Pengiriman (Awalnya Disembunyikan) -->
+          <div id="delivery-address" class="mb-3" style="display: none">
             <label for="customer-address" class="form-label"
-              >Alamat Lengkap</label
+              >Alamat Lengkap Pengiriman *</label
             >
-            <input
-              type="text"
+            <textarea
               class="form-control"
               id="customer-address"
-              placeholder="Ketik alamat atau klik peta"
-              required
-            />
-            <div class="location-search-results" id="location-results"></div>
+              rows="3"
+              placeholder="Masukkan alamat lengkap untuk pengiriman (jalan, RT/RW, kelurahan, kecamatan, kode pos)"
+            ></textarea>
+            <div class="mt-2">
+              <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Pastikan alamat lengkap dan jelas untuk memudahkan pengiriman
+              </small>
+            </div>
+
+            <!-- Map Container -->
+            <div class="mt-3">
+              <label class="form-label"
+                >Pilih Lokasi Pengiriman pada Peta:</label
+              >
+              <div id="map-container">
+                <div id="map"></div>
+              </div>
+              <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Klik pada peta untuk menentukan lokasi pengiriman
+              </small>
+            </div>
+
+            <!-- Pilihan Pengiriman -->
+            <div class="mt-3">
+              <label class="form-label">Pilihan Pengiriman:</label>
+              <div class="delivery-option" id="regular-delivery">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="deliveryOption"
+                    id="regular"
+                    value="regular"
+                    checked
+                  />
+                  <label class="form-check-label fw-bold" for="regular">
+                    Reguler (1-2 jam)
+                  </label>
+                  <p class="mb-0 mt-1 text-muted small">
+                    Pesanan akan diantar dalam waktu 1-2 jam
+                  </p>
+                </div>
+              </div>
+              <div class="delivery-option" id="express-delivery">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="deliveryOption"
+                    id="express"
+                    value="express"
+                  />
+                  <label class="form-check-label fw-bold" for="express">
+                    Express (30-60 menit) + Rp 2.000
+                  </label>
+                  <p class="mb-0 mt-1 text-muted small">
+                    Pesanan akan diantar dalam waktu 30-60 menit dengan biaya
+                    tambahan
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="mb-3">
             <label for="customer-note" class="form-label"
-              >Catatan (opsional)</label
+              >Catatan Pesanan (opsional)</label
             >
             <textarea
               class="form-control"
               id="customer-note"
               rows="2"
+              placeholder="Contoh: Pedas, tanpa bawang, dll."
             ></textarea>
-          </div>
-
-          <div id="map-container">
-            <div id="map"></div>
-            <div class="mt-2 text-muted small">
-              <i class="fas fa-info-circle"></i> Klik pada peta untuk menentukan
-              lokasi pengiriman
-            </div>
-          </div>
-
-          <div
-            class="distance-info mt-3"
-            id="distance-info"
-            style="display: none"
-          >
-            <div class="d-flex justify-content-between">
-              <span>Jarak:</span>
-              <span id="distance-text">-</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Estimasi Waktu:</span>
-              <span id="duration-text">-</span>
-            </div>
-            <div class="d-flex justify-content-between">
-              <span>Area Pengiriman:</span>
-              <span id="delivery-area">-</span>
-            </div>
-          </div>
-
-          <div class="shipping-info mt-3">
-            <h6>Pilihan Pengiriman</h6>
-            <div class="form-check mb-2">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="shipping-option"
-                id="shipping-regular"
-                value="regular"
-                checked
-              />
-              <label class="form-check-label" for="shipping-regular">
-                Reguler (1-2 jam)
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="shipping-option"
-                id="shipping-express"
-                value="express"
-              />
-              <label class="form-check-label" for="shipping-express">
-                Express (30-60 menit) + Rp 2.000
-              </label>
-            </div>
           </div>
         </div>
 
@@ -1249,37 +1584,21 @@
         </div>
         <div
           class="d-flex justify-content-between mb-2"
-          id="shipping-cost-container"
+          id="delivery-fee-container"
           style="display: none"
         >
-          <span>Ongkos Kirim:</span>
-          <span id="shipping-cost">Rp 0</span>
-        </div>
-        <div
-          class="d-flex justify-content-between mb-2"
-          id="express-fee-container"
-          style="display: none"
-        >
-          <span>Biaya Express:</span>
-          <span id="express-fee">Rp 0</span>
+          <span>Biaya Pengiriman:</span>
+          <span id="delivery-fee">Rp 0</span>
         </div>
         <div class="d-flex justify-content-between mb-3">
           <strong>Total:</strong>
           <strong id="cart-total">Rp 0</strong>
         </div>
 
-        <div class="d-flex gap-2">
-          <button class="btn whatsapp-btn flex-fill" id="checkout-btn">
-            <i class="fab fa-whatsapp"></i> WhatsApp
-          </button>
-          <button class="btn cod-btn flex-fill" id="cod-btn">
-            <i class="fas fa-truck"></i> COD
-          </button>
-        </div>
-        <button
-          class="btn btn-outline-secondary w-100 mt-2"
-          id="continue-shopping"
-        >
+        <button class="btn whatsapp-btn w-100 mb-2" id="checkout-btn">
+          <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
+        </button>
+        <button class="btn btn-outline-secondary w-100" id="continue-shopping">
           Lanjutkan Belanja
         </button>
       </div>
@@ -1287,19 +1606,411 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Leaflet JS -->
+    <!-- Leaflet JS for Maps -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
       // Cart functionality
       let cart = [];
-      let shippingCost = 0;
-      let expressFee = 0;
-      let isCOD = false;
-      let map, marker, userLocation;
+      let userLocation = null;
+      let map, marker;
 
-      // Koordinat De'Ngrowot yang sebenarnya (dari Google Maps)
-      const DENGROWOT_LOCATION = [-7.018484, 110.4163];
+      // Fungsi untuk mengecek apakah toko sedang buka
+      function isStoreOpen() {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+
+        // Jam operasional: 16.00 - 18.00 WIB
+        const openHour = 16; // 16.00 WIB
+        const closeHour = 18; // 18.00 WIB
+
+        // Cek apakah waktu saat ini dalam jam operasional
+        if (currentHour >= openHour && currentHour < closeHour) {
+          return true;
+        }
+
+        return false;
+      }
+
+      // Fungsi untuk menampilkan notifikasi jam operasional
+      function showOperatingHoursNotification() {
+        const notification = document.getElementById(
+          "operating-hours-notification"
+        );
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+
+        // Jam operasional: 16.00 - 18.00 WIB
+        const openHour = 16; // 16.00 WIB
+        const closeHour = 18; // 18.00 WIB
+
+        let message = "";
+        let status = "";
+
+        // Logika untuk menentukan status toko
+        if (currentHour >= openHour && currentHour < closeHour) {
+          // Toko buka (16.00 - 18.00)
+          status = "open-now";
+          message = `✅  De'Ngrowot sedang BUKA. Senin - Jumat Order jam ${currentHour}.${currentMinute
+            .toString()
+            .padStart(2, "0")} - 18.00 WIB`;
+        } else {
+          // Toko tutup
+          status = "closed";
+          message = `❌  De'Ngrowot sedang TUTUP. Senin - Jumat Order jam 16.00 - 18.00 WIB`;
+        }
+
+        // Update notifikasi
+        notification.textContent = message;
+        notification.className = `operating-hours-notification ${status}`;
+      }
+
+      // Fungsi untuk mengatur status menu berdasarkan jam operasional
+      function updateMenuStatus() {
+        const isOpen = isStoreOpen();
+
+        // Update semua tombol tambah ke keranjang
+        document.querySelectorAll(".add-to-cart").forEach((button) => {
+          const id = button.getAttribute("data-id");
+          const quantity = parseInt(
+            document.getElementById(`quantity-${id}`).value
+          );
+
+          if (isOpen && quantity > 0) {
+            button.disabled = false;
+          } else {
+            button.disabled = true;
+          }
+        });
+
+        // Update overlay pada menu
+        document.querySelectorAll(".menu-overlay").forEach((overlay) => {
+          if (isOpen) {
+            overlay.style.display = "none";
+          } else {
+            overlay.style.display = "flex";
+          }
+        });
+
+        // Update tombol quantity
+        document.querySelectorAll(".quantity-btn.plus").forEach((button) => {
+          if (isOpen) {
+            button.disabled = false;
+          } else {
+            button.disabled = true;
+          }
+        });
+      }
+
+      // Initialize map dengan logo dan radius
+      function initMap() {
+        // Default location (De'Ngrowot location)
+        const defaultLocation = [-7.018484, 110.4163]; // Semarang coordinates
+
+        // Initialize map
+        map = L.map("map").setView(defaultLocation, 15);
+
+        // Add tile layer (OpenStreetMap)
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // Custom icon for De'Ngrowot dengan logo
+        const dengrowotIcon = L.divIcon({
+          html: `
+            <div class="custom-marker">
+              <i class="fas fa-utensils marker-icon"></i>
+            </div>
+          `,
+          className: "custom-marker-container",
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+        });
+
+        // Add De'Ngrowot marker dengan logo
+        L.marker(defaultLocation, { icon: dengrowotIcon })
+          .addTo(map)
+          .bindPopup(
+            `
+            <div style="text-align: center; min-width: 200px;">
+              <h6 style="margin: 0; color: #d35400;">De'Ngrowot</h6>
+              <p style="margin: 5px 0; font-size: 0.8rem;">
+                Jalan Tengger Raya Utara, RW 07<br>
+                Gajah Mungkur, Semarang<br>
+                Makanan Sehat dan Diet
+              </p>
+            </div>
+          `
+          )
+          .openPopup();
+
+        // Add delivery radius circles (zona pengiriman)
+        // Radius 3km - Zona Terdekat
+        L.circle(defaultLocation, {
+          color: "#2ecc71",
+          fillColor: "#2ecc71",
+          fillOpacity: 0.1,
+          radius: 3000, // 3km in meters
+        }).addTo(map);
+
+        // Radius 5km - Zona Menengah
+        L.circle(defaultLocation, {
+          color: "#f39c12",
+          fillColor: "#f39c12",
+          fillOpacity: 0.1,
+          radius: 5000, // 5km in meters
+        }).addTo(map);
+
+        // Radius 10km - Zona Jauh
+        L.circle(defaultLocation, {
+          color: "#e74c3c",
+          fillColor: "#e74c3c",
+          fillOpacity: 0.1,
+          radius: 10000, // 10km in meters
+        }).addTo(map);
+
+        // Add legend for delivery zones
+        const legend = L.control({ position: "bottomright" });
+        legend.onAdd = function (map) {
+          const div = L.DomUtil.create("div", "info legend");
+          div.style.backgroundColor = "white";
+          div.style.padding = "10px";
+          div.style.borderRadius = "5px";
+          div.style.boxShadow = "0 0 15px rgba(0,0,0,0.2)";
+          div.style.fontSize = "12px";
+          div.innerHTML = `
+            <h6 style="margin: 0 0 8px 0; font-size: 14px;">Zona Pengiriman:</h6>
+            <div style="display: flex; align-items: center; margin-bottom: 5px;">
+              <div style="width: 12px; height: 12px; background-color: #2ecc71; border-radius: 50%; margin-right: 8px;"></div>
+              <span>Dalam 3km</span>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 5px;">
+              <div style="width: 12px; height: 12px; background-color: #f39c12; border-radius: 50%; margin-right: 8px;"></div>
+              <span>3-5km</span>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <div style="width: 12px; height: 12px; background-color: #e74c3c; border-radius: 50%; margin-right: 8px;"></div>
+              <span>5-10km</span>
+            </div>
+          `;
+          return div;
+        };
+        legend.addTo(map);
+
+        // Tambahkan informasi jalan di atas peta
+        const infoBox = L.control({ position: "topleft" });
+        infoBox.onAdd = function (map) {
+          const div = L.DomUtil.create("div", "info-box");
+          div.style.backgroundColor = "white";
+          div.style.padding = "10px";
+          div.style.borderRadius = "5px";
+          div.style.boxShadow = "0 0 15px rgba(0,0,0,0.2)";
+          div.style.fontSize = "12px";
+          div.style.maxWidth = "200px";
+          div.innerHTML = `
+            <div style="color: #d35400; font-weight: bold; margin-bottom: 5px;">
+              <i class="fas fa-map-marker-alt"></i> Lokasi De'Ngrowot
+            </div>
+            <div style="color: #666; line-height: 1.4;">
+              Jalan Tengger Raya Utara<br>
+              RW 07, Gajah Mungkur<br>
+              Semarang, Jawa Tengah
+            </div>
+          `;
+          return div;
+        };
+        infoBox.addTo(map);
+
+        // Add click event to map untuk memilih lokasi pengiriman
+        map.on("click", function (e) {
+          // Remove existing marker
+          if (marker) {
+            map.removeLayer(marker);
+          }
+
+          // Add new marker for delivery location
+          marker = L.marker(e.latlng).addTo(map);
+
+          // Update user location
+          userLocation = e.latlng;
+
+          // Calculate distance and update shipping cost
+          calculateDistanceAndShippingCost();
+        });
+      }
+
+      // Fungsi untuk menghitung jarak dan biaya pengiriman
+      function calculateDistanceAndShippingCost() {
+        if (!userLocation) return;
+
+        const storeLocation = [-7.018484, 110.4163];
+
+        // Calculate straight-line distance (simplified calculation)
+        const R = 6371; // Earth's radius in km
+        const dLat = ((userLocation.lat - storeLocation[0]) * Math.PI) / 180;
+        const dLon = ((userLocation.lng - storeLocation[1]) * Math.PI) / 180;
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos((storeLocation[0] * Math.PI) / 180) *
+            Math.cos((userLocation.lat * Math.PI) / 180) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c; // Distance in km
+
+        // Update shipping cost based on distance
+        let shippingCost = 0;
+        let deliveryTime = "";
+
+        if (distance <= 3) {
+          shippingCost = 8000;
+          deliveryTime = "30-45 menit";
+        } else if (distance <= 5) {
+          shippingCost = 12000;
+          deliveryTime = "45-60 menit";
+        } else if (distance <= 10) {
+          shippingCost = 15000;
+          deliveryTime = "60-90 menit";
+        } else {
+          shippingCost = 20000;
+          deliveryTime = "90+ menit";
+        }
+
+        // Update UI
+        document.getElementById(
+          "delivery-fee"
+        ).textContent = `Rp ${shippingCost.toLocaleString()}`;
+
+        // Show additional info
+        const deliveryInfo = document.createElement("div");
+        deliveryInfo.className = "distance-info";
+        deliveryInfo.innerHTML = `
+            <small class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                Jarak: ${distance.toFixed(1)} km | Estimasi: ${deliveryTime}
+            </small>
+        `;
+
+        const existingInfo = document.querySelector(".distance-info");
+        if (existingInfo) {
+          existingInfo.remove();
+        }
+
+        document.getElementById("delivery-address").appendChild(deliveryInfo);
+
+        // Update total
+        updateCartTotal();
+      }
+
+      // Panggil fungsi saat halaman dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        showOperatingHoursNotification();
+        updateMenuStatus();
+
+        // Update notifikasi dan status menu setiap menit
+        setInterval(function () {
+          showOperatingHoursNotification();
+          updateMenuStatus();
+        }, 60000);
+
+        // Setup shipping method selection
+        setupShippingMethods();
+
+        // Initialize map
+        initMap();
+      });
+
+      // Setup shipping method selection
+      function setupShippingMethods() {
+        const pickupMethod = document.getElementById("pickup-method");
+        const deliveryMethod = document.getElementById("delivery-method");
+        const deliveryAddress = document.getElementById("delivery-address");
+        const pickupRadio = document.getElementById("pickup");
+        const deliveryRadio = document.getElementById("delivery");
+        const regularDelivery = document.getElementById("regular-delivery");
+        const expressDelivery = document.getElementById("express-delivery");
+        const regularRadio = document.getElementById("regular");
+        const expressRadio = document.getElementById("express");
+
+        // Add click event to shipping method cards
+        pickupMethod.addEventListener("click", function () {
+          pickupRadio.checked = true;
+          updateShippingMethodSelection();
+        });
+
+        deliveryMethod.addEventListener("click", function () {
+          deliveryRadio.checked = true;
+          updateShippingMethodSelection();
+        });
+
+        // Add click event to delivery options
+        regularDelivery.addEventListener("click", function () {
+          regularRadio.checked = true;
+          updateDeliveryOptionSelection();
+        });
+
+        expressDelivery.addEventListener("click", function () {
+          expressRadio.checked = true;
+          updateDeliveryOptionSelection();
+        });
+
+        // Update selection when radio buttons change
+        pickupRadio.addEventListener("change", updateShippingMethodSelection);
+        deliveryRadio.addEventListener("change", updateShippingMethodSelection);
+        regularRadio.addEventListener("change", updateDeliveryOptionSelection);
+        expressRadio.addEventListener("change", updateDeliveryOptionSelection);
+
+        // Initial update
+        updateShippingMethodSelection();
+        updateDeliveryOptionSelection();
+      }
+
+      // Update shipping method selection UI
+      function updateShippingMethodSelection() {
+        const pickupMethod = document.getElementById("pickup-method");
+        const deliveryMethod = document.getElementById("delivery-method");
+        const deliveryAddress = document.getElementById("delivery-address");
+        const deliveryFeeContainer = document.getElementById(
+          "delivery-fee-container"
+        );
+        const pickupRadio = document.getElementById("pickup");
+        const deliveryRadio = document.getElementById("delivery");
+
+        if (pickupRadio.checked) {
+          pickupMethod.classList.add("selected");
+          deliveryMethod.classList.remove("selected");
+          deliveryAddress.style.display = "none";
+          deliveryFeeContainer.style.display = "none";
+        } else {
+          deliveryMethod.classList.add("selected");
+          pickupMethod.classList.remove("selected");
+          deliveryAddress.style.display = "block";
+          deliveryFeeContainer.style.display = "flex";
+        }
+
+        updateCartTotal();
+      }
+
+      // Update delivery option selection UI
+      function updateDeliveryOptionSelection() {
+        const regularDelivery = document.getElementById("regular-delivery");
+        const expressDelivery = document.getElementById("express-delivery");
+        const regularRadio = document.getElementById("regular");
+        const expressRadio = document.getElementById("express");
+
+        if (regularRadio.checked) {
+          regularDelivery.classList.add("selected");
+          expressDelivery.classList.remove("selected");
+        } else {
+          expressDelivery.classList.add("selected");
+          regularDelivery.classList.remove("selected");
+        }
+
+        updateCartTotal();
+      }
 
       // DOM elements
       const cartToggle = document.getElementById("cart-toggle");
@@ -1312,168 +2023,12 @@
       const cartTotal = document.getElementById("cart-total");
       const emptyCartMessage = document.getElementById("empty-cart-message");
       const checkoutBtn = document.getElementById("checkout-btn");
-      const codBtn = document.getElementById("cod-btn");
       const continueShoppingBtn = document.getElementById("continue-shopping");
-      const codForm = document.getElementById("cod-form");
-      const shippingCostContainer = document.getElementById(
-        "shipping-cost-container"
+      const waForm = document.getElementById("wa-form");
+      const deliveryFeeContainer = document.getElementById(
+        "delivery-fee-container"
       );
-      const shippingCostElement = document.getElementById("shipping-cost");
-      const expressFeeContainer = document.getElementById(
-        "express-fee-container"
-      );
-      const expressFeeElement = document.getElementById("express-fee");
-      const shippingOptions = document.querySelectorAll(
-        'input[name="shipping-option"]'
-      );
-      const customerAddress = document.getElementById("customer-address");
-      const locationResults = document.getElementById("location-results");
-      const distanceInfo = document.getElementById("distance-info");
-      const distanceText = document.getElementById("distance-text");
-      const durationText = document.getElementById("duration-text");
-      const deliveryAreaText = document.getElementById("delivery-area");
-
-      // Initialize map
-      function initMap() {
-        // Create map centered on De'Ngrowot location
-        map = L.map("map").setView(DENGROWOT_LOCATION, 15);
-
-        // Add tile layer
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(map);
-
-        // Custom icon for De'Ngrowot
-        const dengrowotIcon = L.divIcon({
-          html: '<i class="fas fa-utensils" style="color: #d35400; font-size: 24px;"></i>',
-          className: "dengrowot-marker",
-          iconSize: [30, 30],
-          iconAnchor: [15, 30],
-        });
-
-        // Add De'Ngrowot marker
-        L.marker(DENGROWOT_LOCATION, { icon: dengrowotIcon })
-          .addTo(map)
-          .bindPopup(
-            `
-                    <div style="text-align: center;">
-                        <strong>De'Ngrowot</strong><br>
-                        <small>Jalan Tengger Raya Utara, RW 07, Gajah Mungkur, Semarang, Central Java, Java, 50234, Indonesia</small><br>
-                        <small>Makanan Sehat dan Diet</small>
-                    </div>
-                `
-          )
-          .openPopup();
-
-        // Add delivery radius circle (5km)
-        L.circle(DENGROWOT_LOCATION, {
-          color: "#d35400",
-          fillColor: "#f39c12",
-          fillOpacity: 0.1,
-          radius: 5000, // 5km in meters
-        }).addTo(map);
-
-        // Add click event to map
-        map.on("click", function (e) {
-          // Remove existing marker
-          if (marker) {
-            map.removeLayer(marker);
-          }
-
-          // Add new marker for delivery location
-          marker = L.marker(e.latlng).addTo(map);
-          userLocation = e.latlng;
-
-          // Update address field
-          reverseGeocode(e.latlng.lat, e.latlng.lng);
-
-          // Calculate distance and shipping cost
-          calculateDistance();
-        });
-      }
-
-      // Reverse geocoding to get address from coordinates
-      function reverseGeocode(lat, lng) {
-        // Using Nominatim OpenStreetMap for geocoding
-        fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (data && data.display_name) {
-              customerAddress.value = data.display_name;
-            }
-          })
-          .catch((error) => {
-            console.error("Error reverse geocoding:", error);
-          });
-      }
-
-      // Calculate distance between De'Ngrowot and user location
-      function calculateDistance() {
-        if (!userLocation) return;
-
-        // Calculate straight-line distance (in real app, you'd use routing service)
-        const R = 6371; // Earth's radius in km
-        const dLat =
-          ((userLocation.lat - DENGROWOT_LOCATION[0]) * Math.PI) / 180;
-        const dLon =
-          ((userLocation.lng - DENGROWOT_LOCATION[1]) * Math.PI) / 180;
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos((DENGROWOT_LOCATION[0] * Math.PI) / 180) *
-            Math.cos((userLocation.lat * Math.PI) / 180) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = R * c; // Distance in km
-
-        // Estimate duration based on distance (assuming average speed 20 km/h in city)
-        const duration = Math.round((distance / 20) * 60); // Duration in minutes
-
-        // Update UI
-        distanceText.textContent = distance.toFixed(1) + " km";
-        durationText.textContent = duration + " menit";
-
-        // Determine delivery area
-        let deliveryArea = "Dalam Kota Semarang";
-        if (distance > 10) {
-          deliveryArea = "Luar Kota (Biaya Tambahan)";
-        } else if (distance > 5) {
-          deliveryArea = "Pinggiran Kota";
-        }
-        deliveryAreaText.textContent = deliveryArea;
-
-        distanceInfo.style.display = "block";
-
-        // Calculate shipping cost based on distance
-        calculateShippingCost(distance);
-      }
-
-      // Calculate shipping cost based on distance
-      function calculateShippingCost(distance) {
-        // Pricing based on distance from De'Ngrowot
-        let cost = 0;
-
-        if (distance <= 3) {
-          cost = 8000; // Dalam radius 3km
-        } else if (distance <= 5) {
-          cost = 12000; // Dalam radius 5km
-        } else if (distance <= 10) {
-          cost = 15000; // Dalam radius 10km
-        } else {
-          cost = 20000; // Lebih dari 10km
-        }
-
-        shippingCost = cost;
-
-        // Update shipping cost display
-        shippingCostElement.textContent = "Rp " + shippingCost.toLocaleString();
-
-        // Update total
-        updateTotal();
-      }
+      const deliveryFee = document.getElementById("delivery-fee");
 
       // Toggle cart sidebar
       cartToggle.addEventListener("click", function (e) {
@@ -1486,19 +2041,16 @@
       closeCart.addEventListener("click", function () {
         cartSidebar.classList.remove("open");
         cartOverlay.classList.remove("show");
-        resetCOD();
       });
 
       cartOverlay.addEventListener("click", function () {
         cartSidebar.classList.remove("open");
         cartOverlay.classList.remove("show");
-        resetCOD();
       });
 
       continueShoppingBtn.addEventListener("click", function () {
         cartSidebar.classList.remove("open");
         cartOverlay.classList.remove("show");
-        resetCOD();
       });
 
       // Update button states based on quantity
@@ -1516,7 +2068,7 @@
         }
 
         // Update add to cart button state
-        if (value <= 0) {
+        if (value <= 0 || !isStoreOpen()) {
           addBtn.disabled = true;
         } else {
           addBtn.disabled = false;
@@ -1526,6 +2078,14 @@
       // Quantity controls
       document.querySelectorAll(".quantity-btn").forEach((button) => {
         button.addEventListener("click", function () {
+          // Cek apakah toko buka sebelum mengubah quantity
+          if (!isStoreOpen() && this.classList.contains("plus")) {
+            alert(
+              "Maaf,  De'Ngrowot sedang tutup. Senin - Jumat Order jam 16.00 - 18.00 WIB"
+            );
+            return;
+          }
+
           const id = this.getAttribute("data-id");
           const input = document.getElementById(`quantity-${id}`);
           let value = parseInt(input.value);
@@ -1544,6 +2104,14 @@
       // Add to cart - TIDAK RESET QUANTITY KE 0
       document.querySelectorAll(".add-to-cart").forEach((button) => {
         button.addEventListener("click", function () {
+          // Cek apakah toko buka sebelum menambahkan ke keranjang
+          if (!isStoreOpen()) {
+            alert(
+              "Maaf,  De'Ngrowot sedang tutup. Senin - Jumat Order jam 16.00 - 18.00 WIB"
+            );
+            return;
+          }
+
           const id = this.getAttribute("data-id");
           const name = this.getAttribute("data-name");
           const price = parseInt(this.getAttribute("data-price"));
@@ -1574,7 +2142,6 @@
           }
 
           // JANGAN reset quantity ke 0 - biarkan sesuai keinginan user
-          // document.getElementById(`quantity-${id}`).value = 0;
           updateButtonState(id);
 
           updateCart();
@@ -1589,6 +2156,7 @@
           setTimeout(() => {
             this.innerHTML = '<i class="fas fa-cart-plus me-2"></i>Tambahkan';
             this.classList.remove("btn-success");
+            updateButtonState(id); // Update kembali status tombol
           }, 1000);
         });
       });
@@ -1637,7 +2205,7 @@
           cartSubtotal.textContent = `Rp ${subtotal.toLocaleString()}`;
 
           // Update total
-          updateTotal(subtotal);
+          updateCartTotal(subtotal);
 
           // Add event listeners to remove buttons
           document.querySelectorAll(".remove-item").forEach((button) => {
@@ -1649,8 +2217,8 @@
         }
       }
 
-      // Update total with shipping cost and express fee
-      function updateTotal(subtotal = null) {
+      // Update cart total
+      function updateCartTotal(subtotal = null) {
         if (subtotal === null) {
           subtotal = cart.reduce(
             (sum, item) => sum + item.price * item.quantity,
@@ -1658,7 +2226,26 @@
           );
         }
 
-        const total = subtotal + shippingCost + expressFee;
+        // Calculate delivery fee
+        let deliveryFeeAmount = 0;
+        const shippingMethod = document.querySelector(
+          'input[name="shippingMethod"]:checked'
+        ).value;
+        const deliveryOption = document.querySelector(
+          'input[name="deliveryOption"]:checked'
+        ).value;
+
+        if (shippingMethod === "delivery") {
+          if (deliveryOption === "express") {
+            deliveryFeeAmount = 2000;
+          }
+        }
+
+        // Update delivery fee display
+        deliveryFee.textContent = `Rp ${deliveryFeeAmount.toLocaleString()}`;
+
+        // Calculate total
+        const total = subtotal + deliveryFeeAmount;
         cartTotal.textContent = `Rp ${total.toLocaleString()}`;
       }
 
@@ -1668,62 +2255,6 @@
         updateCart();
       }
 
-      // Shipping option change
-      shippingOptions.forEach((option) => {
-        option.addEventListener("change", function () {
-          if (this.value === "express") {
-            expressFee = 2000; // Diubah dari 5000 menjadi 2000
-            expressFeeElement.textContent = "Rp " + expressFee.toLocaleString();
-            expressFeeContainer.style.display = "flex";
-          } else {
-            expressFee = 0;
-            expressFeeContainer.style.display = "none";
-          }
-
-          updateTotal();
-        });
-      });
-
-      // COD button click
-      codBtn.addEventListener("click", function () {
-        if (cart.length === 0) {
-          alert("Keranjang belanja Anda kosong!");
-          return;
-        }
-
-        isCOD = !isCOD;
-
-        if (isCOD) {
-          // Show COD form
-          codForm.style.display = "block";
-          shippingCostContainer.style.display = "flex";
-
-          // Initialize map if not already done
-          if (!map) {
-            initMap();
-          }
-
-          this.innerHTML = '<i class="fas fa-shopping-cart"></i> Kembali';
-        } else {
-          resetCOD();
-        }
-      });
-
-      // Reset COD form
-      function resetCOD() {
-        isCOD = false;
-        codForm.style.display = "none";
-        shippingCostContainer.style.display = "none";
-        expressFeeContainer.style.display = "none";
-        distanceInfo.style.display = "none";
-        shippingCost = 0;
-        expressFee = 0;
-        codBtn.innerHTML = '<i class="fas fa-truck"></i> COD';
-
-        // Update total without shipping cost
-        updateTotal();
-      }
-
       // Checkout via WhatsApp
       checkoutBtn.addEventListener("click", function () {
         if (cart.length === 0) {
@@ -1731,8 +2262,39 @@
           return;
         }
 
+        // Validasi apakah toko buka
+        if (!isStoreOpen()) {
+          alert(
+            "Maaf,  De'Ngrowot sedang tutup. Senin - Jumat Order jam 16.00 - 18.00 WIB"
+          );
+          return;
+        }
+
+        // Validasi form
+        const customerName = document.getElementById("customer-name").value;
+        const customerPhone = document.getElementById("customer-phone").value;
+        const shippingMethod = document.querySelector(
+          'input[name="shippingMethod"]:checked'
+        ).value;
+        const customerAddress =
+          document.getElementById("customer-address").value;
+        const deliveryOption = document.querySelector(
+          'input[name="deliveryOption"]:checked'
+        ).value;
+
+        if (!customerName || !customerPhone) {
+          alert("Harap lengkapi nama dan nomor telepon terlebih dahulu!");
+          return;
+        }
+
+        // Validasi alamat jika memilih pengiriman
+        if (shippingMethod === "delivery" && !customerAddress.trim()) {
+          alert("Harap masukkan alamat lengkap untuk pengiriman!");
+          return;
+        }
+
         // Format pesan untuk WhatsApp
-        let message = "Halo De'Ngrowot, saya ingin memesan:\n\n";
+        let message = "Halo  De'Ngrowot, saya ingin memesan:\n\n";
 
         cart.forEach((item) => {
           message += `- ${item.name} (${
@@ -1746,79 +2308,48 @@
           (sum, item) => sum + item.price * item.quantity,
           0
         );
-
-        let total = subtotal;
-
-        // Add shipping cost if COD is selected
-        if (isCOD) {
-          // Validate form
-          const customerName = document.getElementById("customer-name").value;
-          const customerPhone = document.getElementById("customer-phone").value;
-          const customerAddressValue =
-            document.getElementById("customer-address").value;
-
-          if (!customerName || !customerPhone || !customerAddressValue) {
-            alert("Harap lengkapi semua informasi pengiriman untuk COD!");
-            return;
-          }
-
-          if (!userLocation) {
-            alert("Harap tentukan lokasi pengiriman di peta!");
-            return;
-          }
-
-          message += `\n*Informasi Pengiriman:*\n`;
-          message += `Nama: ${customerName}\n`;
-          message += `Telepon: ${customerPhone}\n`;
-          message += `Alamat: ${customerAddressValue}\n`;
-
-          const customerNote = document.getElementById("customer-note").value;
-          if (customerNote) {
-            message += `Catatan: ${customerNote}\n`;
-          }
-
-          // Add shipping info
-          const distance = parseFloat(distanceText.textContent);
-          message += `Jarak: ${distance.toFixed(1)} km\n`;
-          message += `Estimasi Waktu: ${durationText.textContent}\n`;
-          message += `Area: ${deliveryAreaText.textContent}\n`;
-
-          // Add shipping option
-          const selectedShipping = document.querySelector(
-            'input[name="shipping-option"]:checked'
-          );
-          const shippingName =
-            selectedShipping.id === "shipping-regular" ? "Reguler" : "Express";
-          message += `Pengiriman: ${shippingName}\n`;
-          message += `Ongkos Kirim: Rp ${shippingCost.toLocaleString()}\n`;
-
-          if (expressFee > 0) {
-            message += `Biaya Express: Rp ${expressFee.toLocaleString()}\n`;
-          }
-
-          total += shippingCost + expressFee;
-        }
+        const deliveryFeeAmount = deliveryOption === "express" ? 2000 : 0;
+        const total = subtotal + deliveryFeeAmount;
 
         message += `\nSubtotal: Rp ${subtotal.toLocaleString()}`;
 
-        if (isCOD) {
-          message += `\nOngkos Kirim: Rp ${shippingCost.toLocaleString()}`;
-          if (expressFee > 0) {
-            message += `\nBiaya Express: Rp ${expressFee.toLocaleString()}`;
-          }
+        if (deliveryFeeAmount > 0) {
+          message += `\nBiaya Pengiriman: Rp ${deliveryFeeAmount.toLocaleString()}`;
         }
 
         message += `\n*Total: Rp ${total.toLocaleString()}*`;
-        message += `\n\nMetode: ${
-          isCOD ? "COD (Cash on Delivery)" : "WhatsApp Order"
-        }`;
+
+        // Add customer info
+        message += `\n\n*Informasi Pemesan:*\n`;
+        message += `Nama: ${customerName}\n`;
+        message += `Telepon: ${customerPhone}\n`;
+
+        // Add shipping method info
+        if (shippingMethod === "pickup") {
+          message += `Metode: Ambil di Toko\n`;
+          message += `Alamat Toko: Jl. Kagok Dalam 2 No. 33 Rt 03 Rw 06, Semarang Jawa Tengah, 50525\n`;
+        } else {
+          message += `Metode: Antar ke Alamat\n`;
+          message += `Alamat Pengiriman: ${customerAddress}\n`;
+          message += `Pilihan Pengiriman: ${
+            deliveryOption === "express"
+              ? "Express (30-60 menit)"
+              : "Reguler (1-2 jam)"
+          }\n`;
+        }
+
+        const customerNote = document.getElementById("customer-note").value;
+        if (customerNote) {
+          message += `Catatan: ${customerNote}\n`;
+        }
+
         message += "\n\nTerima kasih!";
 
         // Encode message untuk URL
         const encodedMessage = encodeURIComponent(message);
 
-        // Nomor WhatsApp De'Ngrowot (ganti dengan nomor yang sesuai)
-        const phoneNumber = "6281234567890";
+        // Nomor WhatsApp  De'Ngrowot
+        const phoneNumber = "6281336549669";
 
         // Redirect ke WhatsApp
         window.open(
@@ -1829,76 +2360,18 @@
         // Kosongkan keranjang setelah checkout
         cart = [];
         updateCart();
-        resetCOD();
         cartSidebar.classList.remove("open");
         cartOverlay.classList.remove("show");
-      });
 
-      // Address search functionality
-      customerAddress.addEventListener("input", function () {
-        const query = this.value;
+        // Reset form
+        document.getElementById("customer-name").value = "";
+        document.getElementById("customer-phone").value = "";
+        document.getElementById("customer-address").value = "";
+        document.getElementById("customer-note").value = "";
 
-        if (query.length < 3) {
-          locationResults.style.display = "none";
-          return;
-        }
-
-        // Search for locations using Nominatim
-        fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            query + " Semarang"
-          )}&limit=5`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            locationResults.innerHTML = "";
-
-            if (data.length > 0) {
-              data.forEach((item) => {
-                const result = document.createElement("div");
-                result.className = "location-result";
-                result.textContent = item.display_name;
-                result.addEventListener("click", function () {
-                  customerAddress.value = item.display_name;
-                  locationResults.style.display = "none";
-
-                  // Update map marker
-                  if (marker) {
-                    map.removeLayer(marker);
-                  }
-
-                  userLocation = {
-                    lat: parseFloat(item.lat),
-                    lng: parseFloat(item.lon),
-                  };
-                  marker = L.marker([userLocation.lat, userLocation.lng]).addTo(
-                    map
-                  );
-                  map.setView([userLocation.lat, userLocation.lng], 15);
-
-                  // Calculate distance
-                  calculateDistance();
-                });
-                locationResults.appendChild(result);
-              });
-              locationResults.style.display = "block";
-            } else {
-              locationResults.style.display = "none";
-            }
-          })
-          .catch((error) => {
-            console.error("Error searching location:", error);
-          });
-      });
-
-      // Hide location results when clicking outside
-      document.addEventListener("click", function (e) {
-        if (
-          !customerAddress.contains(e.target) &&
-          !locationResults.contains(e.target)
-        ) {
-          locationResults.style.display = "none";
-        }
+        // Reset shipping method to default
+        document.getElementById("pickup").checked = true;
+        updateShippingMethodSelection();
       });
 
       // Initialize button states
