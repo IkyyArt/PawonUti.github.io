@@ -1355,7 +1355,7 @@
             <h5 class="mb-3">Pesan Sekarang</h5>
             <p>Pesan makanan favorit Anda melalui WhatsApp</p>
             <a
-              href="https://wa.me/628227789219?text=Halo%20Farrel%20Tako,%20saya%20ingin%20memesan%20makanan"
+              href="https://wa.me/628227789219?text=Halo%20De'Ngrowot,%20saya%20ingin%20memesan%20makanan"
               class="btn whatsapp-btn"
               target="_blank"
             >
@@ -1634,11 +1634,17 @@
       // Cart functionality
       let cart = [];
 
-      // Fungsi untuk mengecek apakah toko sedang buka
+      // Fungsi untuk mengecek hari dan jam operasional
       function isStoreOpen() {
         const now = new Date();
+        const currentDay = now.getDay(); // 0 = Minggu, 1 = Senin, ..., 6 = Sabtu
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
+
+        // Toko hanya buka Senin-Jumat (hari 1-5)
+        if (currentDay === 0 || currentDay === 6) {
+          return false; // Tutup di hari Minggu (0) dan Sabtu (6)
+        }
 
         // Jam operasional: 07.00 - 12.00 WIB
         const openHour = 7; // 07.00 WIB
@@ -1652,14 +1658,40 @@
         return false;
       }
 
+      // Fungsi untuk mendapatkan nama hari dalam bahasa Indonesia
+      function getDayName(dayNumber) {
+        const days = [
+          "Minggu",
+          "Senin",
+          "Selasa",
+          "Rabu",
+          "Kamis",
+          "Jumat",
+          "Sabtu",
+        ];
+        return days[dayNumber];
+      }
+
+      // Fungsi untuk mendapatkan hari buka berikutnya
+      function getNextOpenDay(currentDay) {
+        // Jika hari Jumat (5) lewat jam operasional, maka buka berikutnya adalah Senin (1)
+        if (currentDay === 5) {
+          return { day: 1, name: "Senin" };
+        }
+        // Jika hari lain, buka besok
+        return { day: currentDay + 1, name: getDayName(currentDay + 1) };
+      }
+
       // Fungsi untuk menampilkan notifikasi jam operasional
       function showOperatingHoursNotification() {
         const notification = document.getElementById(
           "operating-hours-notification"
         );
         const now = new Date();
+        const currentDay = now.getDay();
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
+        const dayName = getDayName(currentDay);
 
         // Jam operasional: 07.00 - 12.00 WIB
         const openHour = 7; // 07.00 WIB
@@ -1669,16 +1701,34 @@
         let status = "";
 
         // Logika untuk menentukan status toko
-        if (currentHour >= openHour && currentHour < closeHour) {
+        if (currentDay === 0 || currentDay === 6) {
+          // Weekend - Toko tutup
+          status = "closed";
+          message = `❌ De'Ngrowot LIBUR di hari ${dayName}. Buka: Senin - Jumat jam 07.00 - 12.00 WIB`;
+        } else if (currentHour >= openHour && currentHour < closeHour) {
           // Toko buka (07.00 - 12.00)
           status = "open-now";
-          message = `✅  De'Ngrowot sedang BUKA. Senin - Jumat Order jam ${currentHour}.${currentMinute
+          message = `✅ De'Ngrowot sedang BUKA. ${dayName} jam ${currentHour}.${currentMinute
             .toString()
             .padStart(2, "0")} - 12.00 WIB`;
+        } else if (currentHour < openHour) {
+          // Toko akan buka nanti
+          status = "open-soon";
+          const hoursUntilOpen = openHour - currentHour;
+          const minutesUntilOpen = 60 - currentMinute;
+
+          message = `⏰ De'Ngrowot akan BUKA ${dayName} jam 07.00 - 12.00 WIB (${hoursUntilOpen} jam ${minutesUntilOpen} menit lagi)`;
         } else {
-          // Toko tutup
+          // Toko sudah tutup hari ini
           status = "closed";
-          message = `❌  De'Ngrowot sedang TUTUP. Senin - Jumat Order jam 07.00 - 12.00 WIB`;
+
+          // Cek jika hari Jumat (setelah jam 12:00)
+          if (currentDay === 5) {
+            message = `❌ De'Ngrowot sudah TUTUP. Buka Senin - Jumat jam 07.00 - 12.00 WIB`;
+          } else {
+            const nextOpen = getNextOpenDay(currentDay);
+            message = `❌ De'Ngrowot sudah TUTUP ${dayName}. Buka ${nextOpen.name} jam 07.00 - 12.00 WIB`;
+          }
         }
 
         // Update notifikasi
@@ -1721,6 +1771,14 @@
             button.disabled = true;
           }
         });
+
+        // Update tombol checkout
+        const checkoutBtn = document.getElementById("checkout-btn");
+        if (isOpen) {
+          checkoutBtn.disabled = false;
+        } else {
+          checkoutBtn.disabled = true;
+        }
       }
 
       // Panggil fungsi saat halaman dimuat
@@ -1948,7 +2006,7 @@
           // Cek apakah toko buka sebelum mengubah quantity
           if (!isStoreOpen() && this.classList.contains("plus")) {
             alert(
-              "Maaf,  De'Ngrowot sedang tutup. Senin - Jumat Order jam 07.00 - 12.00 WIB"
+              "Maaf, De'Ngrowot sedang tutup. Senin - Jumat Order jam 07.00 - 12.00 WIB"
             );
             return;
           }
@@ -1974,7 +2032,7 @@
           // Cek apakah toko buka sebelum menambahkan ke keranjang
           if (!isStoreOpen()) {
             alert(
-              "Maaf,  De'Ngrowot sedang tutup. Senin - Jumat Order jam 07.00 - 12.00 WIB"
+              "Maaf, De'Ngrowot sedang tutup. Senin - Jumat Order jam 07.00 - 12.00 WIB"
             );
             return;
           }
@@ -2145,7 +2203,7 @@
         // Validasi apakah toko buka
         if (!isStoreOpen()) {
           alert(
-            "Maaf,  De'Ngrowot sedang tutup. Senin - Jumat Order jam 07.00 - 12.00 WIB"
+            "Maaf, De'Ngrowot sedang tutup. Senin - Jumat Order jam 07.00 - 12.00 WIB"
           );
           return;
         }
@@ -2177,7 +2235,7 @@
         }
 
         // Format pesan untuk WhatsApp
-        let message = "Halo  De'Ngrowot, saya ingin memesan:\n\n";
+        let message = "Halo De'Ngrowot, saya ingin memesan:\n\n";
 
         cart.forEach((item) => {
           message += `- ${item.name} (${
@@ -2226,7 +2284,7 @@
         // Add shipping method info
         if (shippingMethod === "pickup") {
           message += `Metode: Ambil di Toko\n`;
-          message += `Alamat Toko: Jl. Kagok Dalam 2 No. 33 Rt 03 Rw 06, Semarang Jawa Tengah, 50525\n`;
+          message += `Alamat Toko: Jalan Tengger Raya Utara, RW 07, Gajah Mungkur, Semarang, Central Java, Java, 50234, Indonesia\n`;
         } else {
           message += `Metode: Antar ke Alamat\n`;
           message += `Alamat Pengiriman: ${customerAddress}\n`;
@@ -2259,7 +2317,7 @@
         // Encode message untuk URL
         const encodedMessage = encodeURIComponent(message);
 
-        // Nomor WhatsApp  De'Ngrowot
+        // Nomor WhatsApp De'Ngrowot
         const phoneNumber = "628227789219";
 
         // Redirect ke WhatsApp
