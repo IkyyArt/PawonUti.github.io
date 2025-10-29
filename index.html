@@ -52,7 +52,7 @@
 
       .hero-section {
         background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-          url("https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80");
+          url("BG.png");
         background-size: cover;
         background-position: center;
         color: white;
@@ -1648,8 +1648,8 @@
         }
 
         // Jam operasional: 08.00 - 14.00 WIB
-        const openHour = 8; // 07.00 WIB
-        const closeHour = 14; // 12.00 WIB
+        const openHour = 8; // 08.00 WIB
+        const closeHour = 14; // 14.00 WIB
 
         // Cek apakah waktu saat ini dalam jam operasional
         if (currentHour >= openHour && currentHour < closeHour) {
@@ -1711,7 +1711,7 @@
           status = "open-now";
           message = `✅ De'Ngrowot sedang BUKA. ${dayName} jam ${currentHour}.${currentMinute
             .toString()
-            .padStart(2, "0")} - 12.00 WIB`;
+            .padStart(2, "0")} - 14.00 WIB`;
         } else if (currentHour < openHour) {
           // Toko akan buka nanti
           status = "open-soon";
